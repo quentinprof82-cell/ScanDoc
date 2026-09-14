@@ -58,3 +58,11 @@ Projet libre à adapter pour un usage personnel ou pédagogique.
 
 Le logo de l'application est inclus dans `assets/logo-scan-go.png`.
 Les versions PWA `192x192` et `512x512` sont déjà générées dans `icons/` et référencées par le manifeste.
+
+## Flux de numérisation
+
+Le parcours principal est volontairement explicite :
+
+**Prendre une photo → Recadrer → Utiliser la page → Ajouter une page ou Créer le PDF → Partager**
+
+Si l'accès caméra intégré du navigateur est refusé ou indisponible, l'application bascule sur le sélecteur caméra natif du téléphone. Sur iPhone, cela permet de prendre la photo avec l'appareil photo du système puis de revenir dans l'étape de recadrage.
