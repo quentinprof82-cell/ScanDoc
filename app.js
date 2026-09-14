@@ -149,7 +149,7 @@ function showCameraModal(){
   m.innerHTML=`<div class="camera-card">
     <div class="camera-head"><b>Prendre une photo</b><button id="closeCam">✕</button></div>
     <div class="camera-preview"><video id="camVideo" autoplay playsinline muted></video></div>
-    <div class="scan-hint">Placez le document dans le cadre puis appuyez sur le bouton PHOTO.</div>
+    <div class="scan-hint">Cadrez le document puis appuyez sur PHOTO.</div>
     <div class="camera-actions">
       <button id="galleryCam" class="secondary-action">🖼 Galerie</button>
       <button id="snap" class="photo-button" aria-label="Prendre la photo"><span>●</span></button>

@@ -70,3 +70,7 @@ Si l'accès caméra intégré du navigateur est refusé ou indisponible, l'appli
 ## Ergonomie mobile
 
 L'interface est conçue autour de la hauteur réelle du viewport (`100dvh`) et des zones sûres iPhone/iPad (`safe-area-inset-*`). Sur l'écran caméra et l'écran de recadrage, les boutons d'action restent dans la zone visible : ils ne dépendent pas d'un défilement vertical pour être accessibles.
+
+## Ergonomie caméra renforcée
+
+Les contrôles critiques de la caméra et du recadrage sont maintenant ancrés explicitement au viewport, indépendamment de la hauteur calculée par le contenu. La zone vidéo est séparée de la barre d'actions afin que le bouton PHOTO, Galerie et Annuler restent toujours accessibles sans dézoom ni défilement.
