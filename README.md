@@ -66,3 +66,7 @@ Le parcours principal est volontairement explicite :
 **Prendre une photo → Recadrer → Utiliser la page → Ajouter une page ou Créer le PDF → Partager**
 
 Si l'accès caméra intégré du navigateur est refusé ou indisponible, l'application bascule sur le sélecteur caméra natif du téléphone. Sur iPhone, cela permet de prendre la photo avec l'appareil photo du système puis de revenir dans l'étape de recadrage.
+
+## Ergonomie mobile
+
+L'interface est conçue autour de la hauteur réelle du viewport (`100dvh`) et des zones sûres iPhone/iPad (`safe-area-inset-*`). Sur l'écran caméra et l'écran de recadrage, les boutons d'action restent dans la zone visible : ils ne dépendent pas d'un défilement vertical pour être accessibles.

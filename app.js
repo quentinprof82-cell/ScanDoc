@@ -151,9 +151,9 @@ function showCameraModal(){
     <div class="camera-preview"><video id="camVideo" autoplay playsinline muted></video></div>
     <div class="scan-hint">Placez le document dans le cadre puis appuyez sur le bouton PHOTO.</div>
     <div class="camera-actions">
-      <button id="galleryCam" class="secondary-action">Galerie</button>
+      <button id="galleryCam" class="secondary-action">🖼 Galerie</button>
       <button id="snap" class="photo-button" aria-label="Prendre la photo"><span>●</span></button>
-      <button id="finishCam" class="secondary-action">Terminer</button>
+      <button id="finishCam" class="secondary-action">Annuler</button>
     </div>
   </div>`;
   document.body.appendChild(m);
