@@ -53,3 +53,8 @@ Les documents sont dans IndexedDB, donc dans le stockage local du navigateur/app
 ## Licence
 
 Projet libre à adapter pour un usage personnel ou pédagogique.
+
+## Identité visuelle
+
+Le logo de l'application est inclus dans `assets/logo-scan-go.png`.
+Les versions PWA `192x192` et `512x512` sont déjà générées dans `icons/` et référencées par le manifeste.
