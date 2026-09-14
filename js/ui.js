@@ -18,7 +18,7 @@ export async function takePhoto(onPage){
 }
 
 async function showCrop(blob,onPage){
-  editor=await prepare(blob);
+  try{ editor=await prepare(blob); }catch(e){ console.error(e); alert('La photo a bien été prise, mais son traitement a échoué. Réessayez avec une photo moins lourde ou importez l’image depuis la galerie.'); return; }
   modal=document.createElement('div');modal.className='modal';
   modal.innerHTML='<section class="crop-screen"><div class="capture-top"><div><b>Recadrer le document</b><small id="detectStatus">Détection automatique…</small></div><button class="capture-close">✕</button></div><div class="crop-stage"><canvas class="crop-canvas"></canvas></div><div class="crop-toolbar"><button id="auto">🔎 Détecter les coins</button><button id="full">↔ Toute l’image</button></div><div class="crop-actions"><button class="crop-cancel" id="cc">Annuler</button><button class="crop-confirm" id="use">✓ Utiliser cette page</button></div></section>';
   document.body.appendChild(modal);

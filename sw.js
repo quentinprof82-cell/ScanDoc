@@ -1,4 +1,4 @@
-const CACHE='scan-go-v5';
+const CACHE='scan-go-v6';
 const ASSETS=[
  './','./index.html','./manifest.webmanifest',
  './css/app.css','./css/camera.css','./css/responsive.css',
