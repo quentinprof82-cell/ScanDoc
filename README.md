@@ -41,3 +41,12 @@ lui-même dans le dépôt.
 
 Le workflow `.github/workflows/pages.yml` permet de publier automatiquement le
 site avec GitHub Pages après activation de Pages sur GitHub.
+
+
+## V3 — amélioration du scan
+- Détection automatique des coins renforcée (contours + seuil adaptatif + scoring géométrique).
+- Capture caméra haute résolution et JPEG haute qualité.
+- Correction de perspective plus nette.
+- Modes Document N&B, gris et couleur.
+- Gestion des scans existants par boutons, sans menu « 1 / 2 / 3 ».
+- Parcours multi-pages avec boutons explicites « Ajouter une autre page » / « Terminer et créer le PDF ».
