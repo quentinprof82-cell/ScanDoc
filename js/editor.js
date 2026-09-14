@@ -3,10 +3,9 @@ import{detect,warp,order}from'./detect.js';
 
 export async function prepare(blob){
   if(!blob) throw new Error('capture-empty');
-  const img=await image(blob),src=canvas(img,2400);
-  const detected=localStorage.getItem('autoDetect')!=='false' ? await detect(src) : null;
-  const p=detected||[{x:src.width*.025,y:src.height*.025},{x:src.width*.975,y:src.height*.025},{x:src.width*.975,y:src.height*.975},{x:src.width*.025,y:src.height*.975}];
-  return{src,p,detected:!!detected};
+  const img=await image(blob),src=canvas(img,1800);
+  const p=[{x:src.width*.025,y:src.height*.025},{x:src.width*.975,y:src.height*.025},{x:src.width*.975,y:src.height*.975},{x:src.width*.025,y:src.height*.975}];
+  return{src,p,detected:false};
 }
 export async function autodetect(e){const p=await detect(e.src);if(p){e.p=p;e.detected=true;}return!!p;}
 export function full(e){e.p=[{x:0,y:0},{x:e.src.width,y:0},{x:e.src.width,y:e.src.height},{x:0,y:e.src.height}];e.detected=false;}

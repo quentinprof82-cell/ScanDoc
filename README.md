@@ -50,3 +50,7 @@ site avec GitHub Pages après activation de Pages sur GitHub.
 - Modes Document N&B, gris et couleur.
 - Gestion des scans existants par boutons, sans menu « 1 / 2 / 3 ».
 - Parcours multi-pages avec boutons explicites « Ajouter une autre page » / « Terminer et créer le PDF ».
+
+
+### V7
+La capture ouvre désormais immédiatement l'écran de recadrage avant le traitement OpenCV, afin d'éviter les retours à l'accueil sur iPhone.

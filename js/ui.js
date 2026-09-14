@@ -18,17 +18,42 @@ export async function takePhoto(onPage){
 }
 
 async function showCrop(blob,onPage){
-  try{ editor=await prepare(blob); }catch(e){ console.error(e); alert('La photo a bien été prise, mais son traitement a échoué. Réessayez avec une photo moins lourde ou importez l’image depuis la galerie.'); return; }
+  // Open the crop screen immediately. On iPhone, waiting for OpenCV before
+  // displaying it can make Safari appear to return to the home screen.
   modal=document.createElement('div');modal.className='modal';
-  modal.innerHTML='<section class="crop-screen"><div class="capture-top"><div><b>Recadrer le document</b><small id="detectStatus">Détection automatique…</small></div><button class="capture-close">✕</button></div><div class="crop-stage"><canvas class="crop-canvas"></canvas></div><div class="crop-toolbar"><button id="auto">🔎 Détecter les coins</button><button id="full">↔ Toute l’image</button></div><div class="crop-actions"><button class="crop-cancel" id="cc">Annuler</button><button class="crop-confirm" id="use">✓ Utiliser cette page</button></div></section>';
+  modal.innerHTML='<section class="crop-screen"><div class="capture-top"><div><b>Recadrer le document</b><small id="detectStatus">Chargement de la photo…</small></div><button class="capture-close">✕</button></div><div class="crop-stage"><canvas class="crop-canvas"></canvas></div><div class="crop-toolbar"><button id="auto">🔎 Détecter les coins</button><button id="full">↔ Toute l’image</button></div><div class="crop-actions"><button class="crop-cancel" id="cc">Annuler</button><button class="crop-confirm" id="use" disabled>✓ Utiliser cette page</button></div></section>';
   document.body.appendChild(modal);
-  const cv=modal.querySelector('canvas'),status=modal.querySelector('#detectStatus'),draw=()=>render(cv,editor);requestAnimationFrame(draw);
-  status.textContent=editor.detected?'✓ Coins détectés automatiquement':'Coins à placer manuellement';status.className=editor.detected?'ok':'';
-  modal.querySelector('#auto').onclick=async()=>{status.textContent='Détection en cours…';const ok=await autodetect(editor);status.textContent=ok?'✓ Coins détectés automatiquement':'⚠️ Coins non trouvés — placez-les manuellement';status.className=ok?'ok':'warn';draw()};
-  modal.querySelector('#full').onclick=()=>{full(editor);status.textContent='Image entière sélectionnée';status.className='warn';draw()};
+  const cv=modal.querySelector('canvas'),status=modal.querySelector('#detectStatus'),use=modal.querySelector('#use');
+  let ready=false;
+  const draw=()=>editor&&render(cv,editor);
+
+  try{
+    editor=await prepare(blob);
+    ready=true;use.disabled=false;status.textContent='Préparation terminée — détection automatique…';status.className='';draw();
+    if(localStorage.getItem('autoDetect')!=='false'){
+      const ok=await autodetect(editor);
+      if(ok){status.textContent='✓ Coins détectés automatiquement';status.className='ok'}
+      else{status.textContent='⚠️ Coins non trouvés — placez-les manuellement';status.className='warn'}
+      draw();
+    }else{status.textContent='Coins à placer manuellement';status.className='warn'}
+  }catch(e){
+    console.error('Crop preparation failed:',e);
+    status.textContent='⚠️ Détection indisponible — vous pouvez placer les coins';status.className='warn';
+    if(!editor){
+      try{editor=await prepare(blob);ready=true;use.disabled=false;draw()}catch(e2){
+        status.textContent='Impossible de lire la photo. Réessayez.';status.className='warn';
+      }
+    }
+  }
+
+  modal.querySelector('#auto').onclick=async()=>{
+    if(!editor)return;status.textContent='Détection en cours…';status.className='';
+    const ok=await autodetect(editor);status.textContent=ok?'✓ Coins détectés automatiquement':'⚠️ Coins non trouvés — placez-les manuellement';status.className=ok?'ok':'warn';draw();
+  };
+  modal.querySelector('#full').onclick=()=>{if(!editor)return;full(editor);status.textContent='Image entière sélectionnée';status.className='warn';draw()};
   modal.querySelector('#cc').onclick=close;modal.querySelector('.capture-close').onclick=close;
-  modal.querySelector('#use').onclick=()=>{const q=localStorage.getItem('quality')||'high',mode=localStorage.getItem('mode')||'document';onPage({data:exportPage(editor,q==='small'?.82:q==='medium'?.9:.96,mode)});close()};
-  const down=e=>{if(e.type==='pointerdown'){drag=hit(e,cv,editor);if(drag>=0)cv.setPointerCapture?.(e.pointerId)}else if(e.type==='pointermove'&&drag>=0){e.preventDefault();move(e,cv,editor,drag);draw()}else if(e.type==='pointerup'||e.type==='pointercancel'){drag=-1}};
+  use.onclick=()=>{if(!ready||!editor)return;const q=localStorage.getItem('quality')||'high',mode=localStorage.getItem('mode')||'document';onPage({data:exportPage(editor,q==='small'?.82:q==='medium'?.9:.96,mode)});close()};
+  const down=e=>{if(!editor)return;if(e.type==='pointerdown'){drag=hit(e,cv,editor);if(drag>=0)cv.setPointerCapture?.(e.pointerId)}else if(e.type==='pointermove'&&drag>=0){e.preventDefault();move(e,cv,editor,drag);draw()}else if(e.type==='pointerup'||e.type==='pointercancel'){drag=-1}};
   ['pointerdown','pointermove','pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,down,{passive:false}));
 }
 export async function openCrop(blob,onPage){await showCrop(blob,onPage)}
