@@ -29,12 +29,12 @@ async function showCrop(blob,onPage){
 
   try{
     editor=await prepare(blob);
-    ready=true;use.disabled=false;status.textContent='Préparation terminée — détection automatique…';status.className='';draw();
+    ready=true;use.disabled=false;status.textContent='Photo chargée — détection automatique…';status.className='';requestAnimationFrame(()=>{draw();setTimeout(draw,80);});
     if(localStorage.getItem('autoDetect')!=='false'){
       const ok=await autodetect(editor);
       if(ok){status.textContent='✓ Coins détectés automatiquement';status.className='ok'}
       else{status.textContent='⚠️ Coins non trouvés — placez-les manuellement';status.className='warn'}
-      draw();
+      requestAnimationFrame(draw);
     }else{status.textContent='Coins à placer manuellement';status.className='warn'}
   }catch(e){
     console.error('Crop preparation failed:',e);
@@ -48,7 +48,7 @@ async function showCrop(blob,onPage){
 
   modal.querySelector('#auto').onclick=async()=>{
     if(!editor)return;status.textContent='Détection en cours…';status.className='';
-    const ok=await autodetect(editor);status.textContent=ok?'✓ Coins détectés automatiquement':'⚠️ Coins non trouvés — placez-les manuellement';status.className=ok?'ok':'warn';draw();
+    const ok=await autodetect(editor);status.textContent=ok?'✓ Coins détectés automatiquement':'⚠️ Coins non trouvés — placez-les manuellement';status.className=ok?'ok':'warn';requestAnimationFrame(draw);
   };
   modal.querySelector('#full').onclick=()=>{if(!editor)return;full(editor);status.textContent='Image entière sélectionnée';status.className='warn';draw()};
   modal.querySelector('#cc').onclick=close;modal.querySelector('.capture-close').onclick=close;

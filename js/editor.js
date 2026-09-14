@@ -10,7 +10,11 @@ export async function prepare(blob){
 export async function autodetect(e){const p=await detect(e.src);if(p){e.p=p;e.detected=true;}return!!p;}
 export function full(e){e.p=[{x:0,y:0},{x:e.src.width,y:0},{x:e.src.width,y:e.src.height},{x:0,y:e.src.height}];e.detected=false;}
 export function render(canvasEl,e){
-  const r=canvasEl.parentElement.getBoundingClientRect(),scale=Math.min(r.width/e.src.width,r.height/e.src.height),w=Math.max(1,Math.round(e.src.width*scale)),h=Math.max(1,Math.round(e.src.height*scale));
+  const host=canvasEl.parentElement;
+  const r=host.getBoundingClientRect();
+  const rw=Math.max(1,r.width-16), rh=Math.max(1,r.height-16);
+  const scale=Math.min(rw/e.src.width,rh/e.src.height);
+  const w=Math.max(1,Math.round(e.src.width*scale)),h=Math.max(1,Math.round(e.src.height*scale));
   canvasEl.width=w;canvasEl.height=h;const x=canvasEl.getContext('2d');x.drawImage(e.src,0,0,w,h);
   const p=e.p.map(q=>({x:q.x*scale,y:q.y*scale}));
   x.fillStyle='rgba(0,0,0,.48)';x.beginPath();x.rect(0,0,w,h);x.moveTo(p[0].x,p[0].y);p.slice(1).forEach(q=>x.lineTo(q.x,q.y));x.closePath();x.fill('evenodd');
