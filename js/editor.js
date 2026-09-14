@@ -3,7 +3,7 @@ import{detect,warp,order}from'./detect.js';
 
 export async function prepare(blob){
   const img=await image(blob),src=canvas(img,3000);
-  const detected=await detect(src);
+  const detected=localStorage.getItem('autoDetect')!=='false' ? await detect(src) : null;
   const p=detected||[{x:src.width*.025,y:src.height*.025},{x:src.width*.975,y:src.height*.025},{x:src.width*.975,y:src.height*.975},{x:src.width*.025,y:src.height*.975}];
   return{src,p,detected:!!detected};
 }
